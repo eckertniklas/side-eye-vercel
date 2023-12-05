@@ -1,0 +1,55 @@
+--open source data:
+
+create table gta_p8.city (
+	city_id SERIAL PRIMARY KEY,
+	city_postcode TEXT UNIQUE,
+	city_name TEXT
+);
+
+create table gta_p8.address (
+	address_id SERIAL PRIMARY KEY,
+	address_street TEXT,
+	address_number TEXT,
+	city_id INTEGER REFERENCES gta_p8.city(city_id)
+);
+
+create table gta_p8.church (
+	church_id SERIAL PRIMARY KEY,
+	address_id INTEGER REFERENCES gta_p8.address(address_id),
+	church_name TEXT
+);
+
+create table gta_p8.restaurant (
+	restaurant_id SERIAL PRIMARY KEY,
+	address_id INTEGER REFERENCES gta_p8.address(address_id),
+	restaurant_name TEXT,
+	restaurant_website TEXT,
+	restaurant_type TEXT
+);
+
+--collected data:
+
+create table gta_p8.trip (
+	trip_id SERIAL PRIMARY KEY,
+	trip_date_of_collection TIMESTAMP,
+	trip_name TEXT,
+	trip_transport_mode TEXT,
+	trip_ip_address TEXT
+
+);
+
+create table gta_p8.marked_point (
+	marked_point_id SERIAL PRIMARY KEY,
+	marked_point_time TIMESTAMP,
+	trip_id INTEGER REFERENCES gta_p8.trip(trip_id)
+);
+
+--add geometry:
+
+SELECT AddGeometryColumn('gta_p8', 'restaurant', 'geometry', 4326, 'POINT', 2);
+
+SELECT AddGeometryColumn('gta_p8', 'church', 'geometry', 4326, 'POINT', 2);
+
+SELECT AddGeometryColumn('gta_p8', 'marked_point', 'geometry', 4326, 'POINT', 2)
+
+SELECT AddGeometryColumn('gta_p8', 'trip', 'geometry', 4326, 'LINESTRING', 2);

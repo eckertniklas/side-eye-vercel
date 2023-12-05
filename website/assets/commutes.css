@@ -1,0 +1,14 @@
+#trip-list {
+    list-style: none;
+    padding: 0;
+}
+
+.trip-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    margin: 0;
+}
+
+.trip-item:hover {
+    background-color: #f9f9f9;
+}

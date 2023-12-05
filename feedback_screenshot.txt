@@ -1,0 +1,10 @@
+Layout and Design
+    Minimalist design, asthetics, no overload
+    Consistent Design across whole page
+    Recognition rather than Recall: Buttons should be intuitive, use familiar symbols, no new designs
+
+Logical flow
+    Visibility of system status: clearly show when it is recording, exaggerate button change oder so
+    flexibility: unexpected user behaviour should be considered, no crashes, handle extreme cases, 
+    robust error handling, send message to user "error, pls restart", tell users what to do, help them with errors ("try later")
+    documentation page: Explain app, who we are, contact details
