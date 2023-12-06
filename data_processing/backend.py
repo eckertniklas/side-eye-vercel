@@ -25,5 +25,4 @@ def get_id_list():
     return jsonify(array)
 
 if __name__ == "__main__":
-    # run
     app.run(debug=True, host="0.0.0.0", port=6006)
