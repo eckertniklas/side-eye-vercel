@@ -1,7 +1,9 @@
 import psycopg2
 from flask import Flask, jsonify, request, after_this_request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 @app.route("/get_id_list", methods=["GET"])
 def get_id_list():
