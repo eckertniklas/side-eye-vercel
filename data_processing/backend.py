@@ -19,9 +19,9 @@ def get_id_list():
     if cat == 0:
         cur.execute(sql_string_0)
         list = cur.fetchall()
-    if cat == 1:
+    else:
         cur.execute(sql_string_1)
-        list = cur.fetchall()   
+        list = cur.fetchall()
     conn.commit()
     conn.close()
     array = []
