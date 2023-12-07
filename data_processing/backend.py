@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 @app.route("/get_id_list", methods=["GET"])
 def get_id_list():
-    trip_id = request.args.get("trip_id")
-    trip_id = str(trip_id)
+    trip_id = str(request.args.get("trip_id"))
+    cat = int(request.args.get("num2", 0)) #0=restaurant, 1=churches
     db_credentials = {"dbname": 'gta',
                   "port": 5432,
                   "user": 'gta_p8',
@@ -14,9 +14,14 @@ def get_id_list():
                   "host": 'ikgpgis.ethz.ch'}
     conn = psycopg2.connect(**db_credentials)
     cur = conn.cursor()
-    sql_string = "SELECT restaurant_id FROM gta_p8.restaurant JOIN gta_p8.trip ON gta_p8.trip.trip_id = "+trip_id+" WHERE ST_Contains(ST_Buffer(ST_Transform(gta_p8.trip.geometry, 3857),100, 'endcap=flat join=round'),ST_Transform(gta_p8.restaurant.geometry, 3857));"
-    cur.execute(sql_string)
-    list = cur.fetchall()
+    sql_string_0 = "SELECT restaurant_id FROM gta_p8.restaurant JOIN gta_p8.trip ON gta_p8.trip.trip_id = "+trip_id+" WHERE ST_Contains(ST_Buffer(ST_Transform(gta_p8.trip.geometry, 3857),100, 'endcap=flat join=round'),ST_Transform(gta_p8.restaurant.geometry, 3857));"
+    sql_string_1 = "SELECT church_id FROM gta_p8.church JOIN gta_p8.trip ON gta_p8.trip.trip_id = "+trip_id+" WHERE ST_Contains(ST_Buffer(ST_Transform(gta_p8.trip.geometry, 3857),100, 'endcap=flat join=round'),ST_Transform(gta_p8.church.geometry, 3857));"
+    if cat == 0:
+        cur.execute(sql_string_0)
+        list = cur.fetchall()
+    if cat == 1:
+        cur.execute(sql_string_1)
+        list = cur.fetchall()   
     conn.commit()
     conn.close()
     array = []
@@ -25,4 +30,5 @@ def get_id_list():
     return jsonify(array)
 
 if __name__ == "__main__":
+    # run
     app.run(debug=True, host="0.0.0.0", port=6006)
