@@ -14,6 +14,8 @@ CORS(app)  # Enable CORS for all routes
 def get_id_list():
     trip_id = str(request.args.get("trip_id"))
     cat = int(request.args.get("cat")) #0=restaurant, 1=churches
+
+    #connect to db
     db_credentials = {"dbname": 'gta',
                   "port": 5432,
                   "user": 'gta_p8',
@@ -21,6 +23,8 @@ def get_id_list():
                   "host": 'ikgpgis.ethz.ch'}
     conn = psycopg2.connect(**db_credentials)
     cur = conn.cursor()
+
+    # choose between the categories using the cat value
     sql_string_0 = "SELECT restaurant_id FROM gta_p8.restaurant JOIN gta_p8.trip ON gta_p8.trip.trip_id = "+trip_id+" WHERE ST_Contains(ST_Buffer(ST_Transform(gta_p8.trip.geometry, 3857),100, 'endcap=flat join=round'),ST_Transform(gta_p8.restaurant.geometry, 3857));"
     sql_string_1 = "SELECT church_id FROM gta_p8.church JOIN gta_p8.trip ON gta_p8.trip.trip_id = "+trip_id+" WHERE ST_Contains(ST_Buffer(ST_Transform(gta_p8.trip.geometry, 3857),100, 'endcap=flat join=round'),ST_Transform(gta_p8.church.geometry, 3857));"
     if cat == 0:
